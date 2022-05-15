@@ -4,34 +4,33 @@ author: "Duc-Quang Nguyen"
 date: "2022/05/19"
 output: 
   revealjs::revealjs_presentation:
-  theme: serif
-  highlight: pygments
-  echo: TRUE
-  warning: FALSE
-  message: FALSE
-
-
+    theme: moon
+    highlight: espresso
+    echo: TRUE
+    warning: FALSE
+    message: FALSE
 ---
 
 <!-- https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#incremental-bullets -->
-
-
-Source material
-
-[Geocomputation with R by Robin Lovelace](### [Geocomputation with R by Robin Lovelace](https://geocompr.robinlovelace.net/index.html))
 
 
 # Simple features: *sf*
 
 Supports common vector geometry types
 
-![ Simple feature types fully supported by sf.](https://geocompr.robinlovelace.net/figures/sf-classes.png){ height=500px }
+![ Simple feature types fully supported by sf.](https://geocompr.robinlovelace.net/figures/sf-classes.png){ height=400px }
+
+<small>Source: 
+[Geocomputation with R by Robin Lovelace](### [Geocomputation with R by Robin Lovelace](https://geocompr.robinlovelace.net/index.html))
+</small>
 
 --- 
 
 *sf* can represent all common vector geometry types (raster data classes are not supported by sf): points, lines, polygons and their respective ‘multi’ versions (which group together features of the same type into a single feature). sf also supports geometry collections, which can contain multiple geometry types in a single object.
 
-
+<small>Source: 
+[Geocomputation with R by Robin Lovelace](### [Geocomputation with R by Robin Lovelace](https://geocompr.robinlovelace.net/index.html))
+</small>
 
 
 ## [Coordinate reference system (CRS)](https://geocompr.robinlovelace.net/spatial-class.html#crs-intro) 
@@ -40,6 +39,11 @@ How the spatial elements of the data relate to the surface of the Earth. That co
 
 
 Knowing which CRS your data is in, and whether it is in geographic (lon/lat) or projected (typically meters), is important and has consequences for how R handles spatial and geometry operations
+
+<small>Source: 
+[Geocomputation with R by Robin Lovelace](### [Geocomputation with R by Robin Lovelace](https://geocompr.robinlovelace.net/index.html))
+</small>
+
 
 # Carte choroplèthe par municipalité
 
@@ -63,6 +67,8 @@ muni <- st_read("shp/g2g22.shp")
 str(muni)
 ```
 ---
+
+## Quick sf plots & simplify
 ```{r how sf geodata looks like more,warning=FALSE,message=FALSE,fig.show='hide'}
 # Quickly plot the geodata by selecting only the geometry
 muni %>% select() %>% plot
@@ -73,6 +79,15 @@ muni %>% select() %>% plot
 # ggpplot2 way to visualize geo data
 ggplot(muni) +
   geom_sf() 
+
+# dTolerance must be specified in meters.
+# muni %>%
+#   st_simplify(preserveTopology = TRUE, dTolerance = 1000) %>%
+#   ggplot() + geom_sf() 
+
+# muni <- muni %>% 
+#   st_simplify(preserveTopology = TRUE, dTolerance = 70) %>% 
+  #select %>% plot()
 ```
 
 --- 
@@ -82,6 +97,7 @@ ggplot(muni) +
 ```{r ggplot2 sf basic,warning=FALSE,message=FALSE}
 ggplot(muni) +
   geom_sf(aes(fill = as.factor(KTNR)))
+
 ```
 
 ## Improved Choropleth Swiss of municipalities by their canton
@@ -97,19 +113,69 @@ ggplot(muni) +
   
 ```
 
-# Carte choroplèthe par municipalité du vote de la «Lex Netflix» (15.05.2022)
+# Carte choroplèthe par municipalité de la votation fédérale «Lex Netflix» 15.05.2022
 
 Données historiques et en temps réel des votations fédérales & cantonales suisses:  
 [swissdd](https://politanch.github.io/swissdd/)
 
+id vote «Lex Netflix»: 6550
 
-```{r exmple swissddd}
+
+## Get the votation results by municipality 
+```{r load federal ballot results from swissddd}
 muni_2022_05_15_results <- swissdd::get_nationalvotes(
   geolevel = "municipality", from_date = "2022-05-15", 
-  to_date =  "2022-05-15")
+  to_date =  "2022-05-15", language = "FR")
 
+# str(muni_2022_05_15_results)
+#  muni_2022_05_15_results$name %>% unique()
+
+ln_df <- muni_2022_05_15_results %>% 
+  filter(id == 6550) %>% 
+  select(canton_name:mun_name, jaStimmenInProzent, gueltigeStimmen)
+  
+```
+
+## Bind to geodata and plot
+```{r bind}
+ln_df <- left_join(
+  ln_df %>% mutate(mun_id = as.numeric(mun_id)), 
+  muni %>% select(GMDNR:GRNR), 
+  by = c("mun_id" = "GMDNR")
+  # To ensure the join returns a sf object
+) %>% st_as_sf()
+
+ln_map <- ggplot(ln_df) +
+  geom_sf(aes(fill = jaStimmenInProzent), size = 0) +
+  scale_fill_viridis_c(option = "E", limits = c(0, 100)) +
+  theme_void() +
+  theme(legend.position = "top") +
+  labs(subtitle = "% de oui à la votation fédérale «Lex Netflix»")
+ln_map 
 
 ```
+
+
+## Polish the map with lakes and cantons
+```{r load lakes and cantonal boundaries}
+cant <- muni %>% 
+  group_by(KTNR) %>% 
+  summarise(geometry = st_union(geometry)) %>% 
+  ungroup() 
+
+lakes <- st_read("shp/g2s22.shp")
+
+ln_map +
+  geom_sf(data = lakes, size = 0) +
+  geom_sf(data = cant, size = 0.1, colour = "white", fill = NA)
+
+```
+
+
+https://www.rstudio.com/resources/cheatsheets/
+
+
+
 
 
 
