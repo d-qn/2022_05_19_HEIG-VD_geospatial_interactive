@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to geocomputation with R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Duc-Quang Nguyen" />
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Introduction to geocomputation with R
+]
+.subtitle[
+## sf
+]
+.author[
+### Duc-Quang Nguyen
+]
+.date[
+### 2022/05/19
+]
+
+---
+
+
+&lt;!-- https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#incremental-bullets --&gt;
+
+
+--- 
+Source material
+
+[Geocomputation with R by Robin Lovelace](### [Geocomputation with R by Robin Lovelace](https://geocompr.robinlovelace.net/index.html))
+
+--- 
+# Simple features: *sf*
+
+Supports common vector geometry types
+
+![ Simple feature types fully supported by sf.](https://geocompr.robinlovelace.net/figures/sf-classes.png){ height=500px }
+
+--- 
+
+*sf* can represent all common vector geometry types (raster data classes are not supported by sf): points, lines, polygons and their respective ‘multi’ versions (which group together features of the same type into a single feature). sf also supports geometry collections, which can contain multiple geometry types in a single object.
+
+---
+
+
+## [Coordinate reference system (CRS)](https://geocompr.robinlovelace.net/spatial-class.html#crs-intro) 
+
+How the spatial elements of the data relate to the surface of the Earth. That coordinate systems are a key component of geographic objects
+
+
+Knowing which CRS your data is in, and whether it is in geographic (lon/lat) or projected (typically meters), is important and has consequences for how R handles spatial and geometry operations
+
+---
+
+# Carte choroplèthe par municipalité
+
+
+```r
+library(tidyverse)
+library(sf)
+library(swissdd) # Données historiques et en temps réel des votations fédérales 
+#require("xaringan")
+```
+
+---
+
+
+## Load Swiss geo data
+
+&lt;smaller&gt;Data from [Office fédéral de la statistique - Limites communales généralisées: géodonnées ](https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.assetdetail.22484210.html)&lt;/smaller&gt;
+
+
+```r
+muni &lt;- st_read("shp/g2g22.shp")
+```
+
+```
+## Reading layer `g2g22' from data source 
+##   `/Users/duc-q.nguyen/Documents/ddj/HEIGVD/R/shp/g2g22.shp' 
+##   using driver `ESRI Shapefile'
+## Simple feature collection with 2148 features and 19 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 2485424 ymin: 1075268 xmax: 2833837 ymax: 1295937
+## Projected CRS: CH1903+ / LV95
+```
+
+## Anatomy of a sf object 
+
+```r
+str(muni)
+```
+
+```
+## Classes 'sf' and 'data.frame':	2148 obs. of  20 variables:
+##  $ GMDHISTID: num  13256 11742 11801 11992 12249 ...
+##  $ GMDNR    : num  1 2 3 4 5 6 7 8 9 10 ...
+##  $ GMDNAME  : chr  "Aeugst am Albis" "Affoltern am Albis" "Bonstetten" "Hausen am Albis" ...
+##  $ BZHISTID : num  10053 10053 10053 10053 10053 ...
+##  $ BZNR     : num  101 101 101 101 101 101 101 101 101 101 ...
+##  $ KTNR     : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ GRNR     : num  4 4 4 4 4 4 4 4 4 4 ...
+##  $ AREA_HA  : num  791 1059 743 1360 653 ...
+##  $ E_MIN    : num  2678111 2673826 2675745 2680394 2674866 ...
+##  $ E_MAX    : num  2681155 2678584 2679642 2686463 2678972 ...
+##  $ N_MIN    : num  1234561 1235208 1238997 1230185 1238053 ...
+##  $ N_MAX    : num  1238544 1239338 1243159 1236411 1241034 ...
+##  $ E_CNTR   : num  2679300 2676800 2677800 2682900 2676400 ...
+##  $ N_CNTR   : num  1235700 1236800 1241000 1233100 1239000 ...
+##  $ Z_MIN    : num  533 440 502 524 475 463 412 386 432 383 ...
+##  $ Z_MAX    : num  887 749 715 915 745 621 504 476 658 520 ...
+##  $ Z_AVG    : num  685 529 581 673 560 557 454 414 506 440 ...
+##  $ Z_MED    : num  673 502 583 653 543 559 454 410 493 439 ...
+##  $ Z_CNTR   : num  700 490 544 610 503 573 431 400 471 453 ...
+##  $ geometry :sfc_MULTIPOLYGON of length 2148; first list element: List of 1
+##   ..$ :List of 1
+##   .. ..$ : num [1:24, 1:2] 2678219 2678560 2678206 2678196 2678259 ...
+##   ..- attr(*, "class")= chr [1:3] "XY" "MULTIPOLYGON" "sfg"
+##  - attr(*, "sf_column")= chr "geometry"
+##  - attr(*, "agr")= Factor w/ 3 levels "constant","aggregate",..: NA NA NA NA NA NA NA NA NA NA ...
+##   ..- attr(*, "names")= chr [1:19] "GMDHISTID" "GMDNR" "GMDNAME" "BZHISTID" ...
+```
+---
+
+```r
+# Quickly plot the geodata by selecting only the geometry
+muni %&gt;% select() %&gt;% plot
+```
+
+```r
+# This will color the map by the features
+# plot(muni)
+
+# ggpplot2 way to visualize geo data
+ggplot(muni) +
+  geom_sf() 
+```
+
+--- 
+## Basic choropleth of Swiss municipalities by their canton
+
+
+
+```r
+ggplot(muni) +
+  geom_sf(aes(fill = as.factor(KTNR)))
+```
+
+![](geospatial_xaringan_files/figure-html/ggplot2 sf basic-1.png)&lt;!-- --&gt;
+
+## Improved Choropleth Swiss of municipalities by their canton
+
+
+```r
+ggplot(muni) +
+  # Set no linewidth with size argument
+  geom_sf(aes(fill = as.factor(KTNR)), size = 0) +
+  # Hide colour scale
+  scale_fill_viridis_d(guide = 'none') +
+  # Remove graticule
+  theme_void()
+```
+
+![](geospatial_xaringan_files/figure-html/ggplot2 sfmore-1.png)&lt;!-- --&gt;
+
+# Carte choroplèthe par municipalité du vote de la «Lex Netflix» (15.05.2022)
+
+Données historiques et en temps réel des votations fédérales &amp; cantonales suisses:  
+[swissdd](https://politanch.github.io/swissdd/)
+
+
+
+```r
+muni_2022_05_15_results &lt;- swissdd::get_nationalvotes(
+  geolevel = "municipality", from_date = "2022-05-15", 
+  to_date =  "2022-05-15")
+```
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

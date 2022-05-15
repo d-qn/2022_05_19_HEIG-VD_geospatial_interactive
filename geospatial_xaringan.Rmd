@@ -1,0 +1,122 @@
+---
+title: "Introduction to geocomputation with R"
+subtitle: "sf"
+author: "Duc-Quang Nguyen"
+date: "2022/05/19"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+
+
+---
+
+<!-- https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html#incremental-bullets -->
+
+
+--- 
+Source material
+
+[Geocomputation with R by Robin Lovelace](### [Geocomputation with R by Robin Lovelace](https://geocompr.robinlovelace.net/index.html))
+
+--- 
+# Simple features: *sf*
+
+Supports common vector geometry types
+
+![ Simple feature types fully supported by sf.](https://geocompr.robinlovelace.net/figures/sf-classes.png){ height=500px }
+
+--- 
+
+*sf* can represent all common vector geometry types (raster data classes are not supported by sf): points, lines, polygons and their respective ‘multi’ versions (which group together features of the same type into a single feature). sf also supports geometry collections, which can contain multiple geometry types in a single object.
+
+---
+
+
+## [Coordinate reference system (CRS)](https://geocompr.robinlovelace.net/spatial-class.html#crs-intro) 
+
+How the spatial elements of the data relate to the surface of the Earth. That coordinate systems are a key component of geographic objects
+
+
+Knowing which CRS your data is in, and whether it is in geographic (lon/lat) or projected (typically meters), is important and has consequences for how R handles spatial and geometry operations
+
+---
+
+# Carte choroplèthe par municipalité
+
+```{r load packages,warning=FALSE,message=FALSE}
+library(tidyverse)
+library(sf)
+library(swissdd) # Données historiques et en temps réel des votations fédérales 
+#require("xaringan")
+```
+
+---
+
+
+## Load Swiss geo data
+
+<smaller>Data from [Office fédéral de la statistique - Limites communales généralisées: géodonnées ](https://www.bfs.admin.ch/bfs/fr/home/services/geostat/geodonnees-statistique-federale/limites-administratives/limites-communales-generalisees.assetdetail.22484210.html)</smaller>
+
+```{r Load Switzerland municipality administrive boundaries}
+muni <- st_read("shp/g2g22.shp")
+```
+
+## Anatomy of a sf object 
+```{r how sf geodata looks like}
+str(muni)
+```
+---
+```{r how sf geodata looks like more,warning=FALSE,message=FALSE,fig.show='hide'}
+# Quickly plot the geodata by selecting only the geometry
+muni %>% select() %>% plot
+
+# This will color the map by the features
+# plot(muni)
+
+# ggpplot2 way to visualize geo data
+ggplot(muni) +
+  geom_sf() 
+```
+
+--- 
+## Basic choropleth of Swiss municipalities by their canton
+
+
+```{r ggplot2 sf basic,warning=FALSE,message=FALSE}
+ggplot(muni) +
+  geom_sf(aes(fill = as.factor(KTNR)))
+```
+
+## Improved Choropleth Swiss of municipalities by their canton
+
+```{r ggplot2 sfmore,warning=FALSE,message=FALSE}
+ggplot(muni) +
+  # Set no linewidth with size argument
+  geom_sf(aes(fill = as.factor(KTNR)), size = 0) +
+  # Hide colour scale
+  scale_fill_viridis_d(guide = 'none') +
+  # Remove graticule
+  theme_void()
+  
+```
+
+# Carte choroplèthe par municipalité du vote de la «Lex Netflix» (15.05.2022)
+
+Données historiques et en temps réel des votations fédérales & cantonales suisses:  
+[swissdd](https://politanch.github.io/swissdd/)
+
+
+```{r exmple swissddd}
+muni_2022_05_15_results <- swissdd::get_nationalvotes(
+  geolevel = "municipality", from_date = "2022-05-15", 
+  to_date =  "2022-05-15")
+
+
+```
+
+
+
+
