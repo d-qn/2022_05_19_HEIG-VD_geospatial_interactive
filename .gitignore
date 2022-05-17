@@ -18,3 +18,120 @@
 .Rproj.user/4ACA8BA5/sources/s-148B05E5/113E6729
 .Rproj.user/4ACA8BA5/sources/prop/INDEX
 .Rproj.user/4ACA8BA5/sources/prop/8D51568A
+js/highchart-binding-0.9.4.9000/highchart.js
+js/highcharts-10.0.0/css/htmlwdgtgrid.css
+js/highcharts-10.0.0/css/motion.css
+js/highcharts-10.0.0/custom/appear 2.js
+js/highcharts-10.0.0/custom/appear.js
+js/highcharts-10.0.0/custom/delay-animation 2.js
+js/highcharts-10.0.0/custom/delay-animation.js
+js/highcharts-10.0.0/custom/reset 2.js
+js/highcharts-10.0.0/custom/reset.js
+js/highcharts-10.0.0/custom/symbols-extra 2.js
+js/highcharts-10.0.0/custom/symbols-extra.js
+js/highcharts-10.0.0/custom/text-symbols 2.js
+js/highcharts-10.0.0/custom/text-symbols.js
+js/highcharts-10.0.0/custom/tooltip-delay 2.js
+js/highcharts-10.0.0/custom/tooltip-delay.js
+js/highcharts-10.0.0/highcharts-3d.js
+js/highcharts-10.0.0/highcharts-more.js
+js/highcharts-10.0.0/highcharts.js
+js/highcharts-10.0.0/modules/accessibility.js
+js/highcharts-10.0.0/modules/annotations-advanced.js
+js/highcharts-10.0.0/modules/annotations.js
+js/highcharts-10.0.0/modules/arc-diagram 2.js
+js/highcharts-10.0.0/modules/arc-diagram.js
+js/highcharts-10.0.0/modules/arrow-symbols.js
+js/highcharts-10.0.0/modules/boost-canvas 2.js
+js/highcharts-10.0.0/modules/boost-canvas.js
+js/highcharts-10.0.0/modules/boost.js
+js/highcharts-10.0.0/modules/broken-axis.js
+js/highcharts-10.0.0/modules/bullet.js
+js/highcharts-10.0.0/modules/coloraxis 2.js
+js/highcharts-10.0.0/modules/coloraxis.js
+js/highcharts-10.0.0/modules/current-date-indicator.js
+js/highcharts-10.0.0/modules/cylinder 2.js
+js/highcharts-10.0.0/modules/cylinder.js
+js/highcharts-10.0.0/modules/data.js
+js/highcharts-10.0.0/modules/datagrouping.js
+js/highcharts-10.0.0/modules/debugger 2.js
+js/highcharts-10.0.0/modules/debugger.js
+js/highcharts-10.0.0/modules/dependency-wheel.js
+js/highcharts-10.0.0/modules/dotplot.js
+js/highcharts-10.0.0/modules/drag-panes.js
+js/highcharts-10.0.0/modules/draggable-points.js
+js/highcharts-10.0.0/modules/drilldown 2.js
+js/highcharts-10.0.0/modules/drilldown.js
+js/highcharts-10.0.0/modules/dumbbell.js
+js/highcharts-10.0.0/modules/export-data.js
+js/highcharts-10.0.0/modules/exporting 2.js
+js/highcharts-10.0.0/modules/exporting.js
+js/highcharts-10.0.0/modules/full-screen.js
+js/highcharts-10.0.0/modules/funnel 2.js
+js/highcharts-10.0.0/modules/funnel.js
+js/highcharts-10.0.0/modules/funnel3d 2.js
+js/highcharts-10.0.0/modules/funnel3d.js
+js/highcharts-10.0.0/modules/gantt.js
+js/highcharts-10.0.0/modules/grid-axis.js
+js/highcharts-10.0.0/modules/heatmap.js
+js/highcharts-10.0.0/modules/heikinashi.js
+js/highcharts-10.0.0/modules/histogram-bellcurve.js
+js/highcharts-10.0.0/modules/hollowcandlestick.js
+js/highcharts-10.0.0/modules/item-series 2.js
+js/highcharts-10.0.0/modules/item-series.js
+js/highcharts-10.0.0/modules/lollipop.js
+js/highcharts-10.0.0/modules/map 2.js
+js/highcharts-10.0.0/modules/map.js
+js/highcharts-10.0.0/modules/marker-clusters.js
+js/highcharts-10.0.0/modules/networkgraph 2.js
+js/highcharts-10.0.0/modules/networkgraph.js
+js/highcharts-10.0.0/modules/no-data-to-display.js
+js/highcharts-10.0.0/modules/offline-exporting.js
+js/highcharts-10.0.0/modules/oldie 2.js
+js/highcharts-10.0.0/modules/oldie-polyfills.js
+js/highcharts-10.0.0/modules/oldie.js
+js/highcharts-10.0.0/modules/organization.js
+js/highcharts-10.0.0/modules/overlapping-datalabels.js
+js/highcharts-10.0.0/modules/parallel-coordinates 2.js
+js/highcharts-10.0.0/modules/parallel-coordinates.js
+js/highcharts-10.0.0/modules/pareto.js
+js/highcharts-10.0.0/modules/pathfinder.js
+js/highcharts-10.0.0/modules/pattern-fill.js
+js/highcharts-10.0.0/modules/price-indicator 2.js
+js/highcharts-10.0.0/modules/price-indicator.js
+js/highcharts-10.0.0/modules/pyramid3d.js
+js/highcharts-10.0.0/modules/sankey.js
+js/highcharts-10.0.0/modules/series-label 2.js
+js/highcharts-10.0.0/modules/series-label.js
+js/highcharts-10.0.0/modules/solid-gauge.js
+js/highcharts-10.0.0/modules/sonification.js
+js/highcharts-10.0.0/modules/static-scale.js
+js/highcharts-10.0.0/modules/stock-tools.js
+js/highcharts-10.0.0/modules/stock.js
+js/highcharts-10.0.0/modules/streamgraph.js
+js/highcharts-10.0.0/modules/sunburst 2.js
+js/highcharts-10.0.0/modules/sunburst.js
+js/highcharts-10.0.0/modules/tilemap.js
+js/highcharts-10.0.0/modules/timeline.js
+js/highcharts-10.0.0/modules/treegrid 2.js
+js/highcharts-10.0.0/modules/treegrid.js
+js/highcharts-10.0.0/modules/treemap.js
+js/highcharts-10.0.0/modules/variable-pie.js
+js/highcharts-10.0.0/modules/variwide 2.js
+js/highcharts-10.0.0/modules/variwide.js
+js/highcharts-10.0.0/modules/vector.js
+js/highcharts-10.0.0/modules/venn.js
+js/highcharts-10.0.0/modules/windbarb.js
+js/highcharts-10.0.0/modules/wordcloud 2.js
+js/highcharts-10.0.0/modules/wordcloud.js
+js/highcharts-10.0.0/modules/xrange.js
+js/highcharts-10.0.0/plugins/draggable-legend.js
+js/highcharts-10.0.0/plugins/grouped-categories.js
+js/highcharts-10.0.0/plugins/highcharts-regression.js
+js/highcharts-10.0.0/plugins/motion.js
+js/highcharts-10.0.0/plugins/multicolor_series.js
+js/htmlwidgets-1.5.4/htmlwidgets.js
+js/jquery-3.5.1/jquery.min.js
+js/proj4js-2.3.15/proj4.js
+fluxGasNaturelEuropeSankey.html
+.DS_Store

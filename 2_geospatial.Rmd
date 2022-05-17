@@ -25,6 +25,11 @@ library(htmltools)
 
 # Leaflet
 
+Leaflet is one of the most popular open-source JavaScript libraries for interactive maps
+
++  Good performance, many options, very large support/users
+-  API syntax not always straightforward to learn from R 
+
 * [Leaflet](https://rstudio.github.io/leaflet/)
 * [Basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.html)
 
