@@ -1,0 +1,138 @@
+---
+title: "Highcharter"
+subtitle: "shorturl.at/jCX09"
+author: "Duc-Quang Nguyen"
+date: "2022/05/19"
+output: 
+  revealjs::revealjs_presentation:
+    theme: moon
+    highlight: espresso
+    echo: TRUE
+    warning: FALSE
+    message: FALSE
+---
+
+
+
+```{r load packages,warning=FALSE,message=FALSE}
+library(tidyverse)
+library(sf)
+library(highcharter)
+library(htmltools)
+#install.packages(c("htmltools", leaflet", "highcharter"))
+```
+
+# Highchart(er)
+
+* [Highcharter](https://jkunst.com/highcharter/)
+* [Highcharts](https://www.highcharts.com)
+
+Free for personal/non-commercial uses and paid for commercial applications
+
+
+---
+
+## Choropleth map by municipality of the federal ballot «Lex Netflix» 
+ (again)
+
+
+```{r load votation data and swiss municipalities boundaries, warning=FALSE,message=FALSE}
+muni <- st_read("shp/g2g22.shp")
+
+ln_df  <- swissdd::get_nationalvotes(
+  geolevel = "municipality", from_date = "2022-05-15", 
+  to_date =  "2022-05-15", language = "FR") %>% 
+  filter(id == 6550) %>% 
+  select(canton_name:mun_name, jaStimmenInProzent, gueltigeStimmen)
+
+ln_df <- left_join(
+  ln_df %>% mutate(mun_id = as.numeric(mun_id)), 
+  muni %>% select(GMDNR:GRNR), 
+  by = c("mun_id" = "GMDNR")
+  # To ensure the join returns a sf object
+) %>% st_as_sf()
+
+```
+
+## Reproject the data
+
+```{r reproject and tooltip}
+# reproject into WGS84 coordinates: https://rspatial.org/raster/spatial/6-crs.html
+ln_df <- ln_df %>% 
+  st_transform(crs = 4326) %>% 
+   mutate(
+    tp = str_c("<h3>", mun_name, "<h3>",
+               "<i>", canton_name, "</i><br>",
+               "<b>",
+               prettyNum(jaStimmenInProzent, 
+                         decimal.mark = ",", digits = 3),
+               "% oui</b>"
+               ) %>% lapply(htmltools::HTML) # important somehow...
+   )
+```
+
+
+## Lealet map
+
+```{r leaflet map}
+# Function to discretize and colour % yes vote
+pal <- colorBin(
+  "PRGn", domain = ln_df$jaStimmenInProzent , 
+  bins = seq(0, 100, 10))
+
+lmap <- leaflet(ln_df) %>%
+  # Define the basemap 
+  addProviderTiles(providers$CartoDB.PositronNoLabels,
+                   options = providerTileOptions(opacity = 1)) %>%
+  addPolygons( 
+    color = "white", weight = 0.2, smoothFactor = 0.5,
+    opacity = 0.95, fillOpacity = 0.98,
+    fillColor = ~pal(jaStimmenInProzent),
+    label = ln_df$tp,
+    labelOptions = labelOptions(
+      offset = c(20, 0),
+      style = list(
+        "font-size" = "0.9em",
+        "background-color" = "#f2f2f2",
+        "border-radius" = "4px"),
+      sticky = F,
+      direction = "auto")
+  ) %>% 
+  # Add basemap label layer
+  addMapPane("labels", zIndex = 410) %>% # show labels above      
+  addProviderTiles(providers$CartoDB.PositronOnlyLabels,
+                   options = providerTileOptions(pane = "labels") ) %>%
+  # Legend box
+  addLegend(
+    pal = pal, values = ~jaStimmenInProzent, opacity = 0.7,
+    position = "bottomleft",
+    title = "% de oui à Lex Netflix") %>%
+  # Localized autozoom 
+  addEasyButton(easyButton(
+    icon="fa-crosshairs", title="Locate Me",
+    onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+
+
+```
+
+---
+
+```{r view leaflet map}
+
+lmap
+
+```
+
+---
+
+```{r add cantonal borders layer, results='hide'}
+lmap %>% 
+  addPolylines(
+    data = st_read("shp/g2k22.shp") %>% 
+      st_transform(crs = 4326),
+    color = "grey", weight = 1.6, smoothFactor = 0.3,
+    opacity = 0.7
+  ) 
+
+```
+
