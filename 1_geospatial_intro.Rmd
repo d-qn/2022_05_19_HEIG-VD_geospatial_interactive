@@ -1,12 +1,11 @@
 ---
 title: "Introduction to geocomputation with R"
-subtitle: "shorturl.at/jCX09"
+subtitle: "<br>shorturl.at/jCX09<br>"
 author: "Duc-Quang Nguyen"
 date: "2022/05/19"
 output: 
   revealjs::revealjs_presentation:
-    theme: moon
-    highlight: espresso
+    theme: serif
     echo: TRUE
     warning: FALSE
     message: FALSE
@@ -174,20 +173,17 @@ ln_map +
 
 # Interactive R charts with HTMLwidgets 
 
+
 Bring the best of JavaScript data visualization to R
 
+<small>
 
-With a line or two of R code, use javaScript visualization libraries at the R console, just like plots
-
-HTML widgets can be used at the R console as well as embedded in R Markdown reports and Shiny web applications
-
+* With a line or two of R code, use javaScript visualization libraries at the R console, just like plots
+* HTML widgets can be used at the R console as well as embedded in R Markdown reports and Shiny web applications
 
 [htmlwidgets gallery](http://gallery.htmlwidgets.org)
 
-
 Some htmlwidgets:
-
-<small>
 
 * [plotly](https://plotly.com/r/)
 * [leaflet](https://rstudio.github.io/leaflet/)
@@ -207,7 +203,6 @@ Additional aesthetics:
 
 * tooltip: tooltips to be displayed when mouse is over elements.
 * data_id: id to be associated with elements (used for hover and click actions)
-* onclick: JavaScript function to be executed when elements are clicked
 
 Call function *girafe* with the ggplot object so that the graphic is translated as a web interactive graphics.
 </small>
@@ -239,6 +234,7 @@ ln_mapi <- ggplot(ln_df) +
 girafe(ggobj = ln_mapi)
 
 ```
+
 ---
 
 ## Better tooltip

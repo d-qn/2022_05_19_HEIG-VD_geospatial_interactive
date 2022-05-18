@@ -1,12 +1,11 @@
 ---
 title: "Highcharter"
-subtitle: "shorturl.at/jCX09"
+subtitle: "<br>shorturl.at/jCX09<br>"
 author: "Duc-Quang Nguyen"
 date: "2022/05/19"
 output: 
   revealjs::revealjs_presentation:
-    theme: moon
-    highlight: espresso
+    theme: serif
     echo: TRUE
     warning: FALSE
     message: FALSE
@@ -35,7 +34,11 @@ Highcharts is very flexible and customizable javascript charting library and it 
 
 ---
 
-## asdf
+## Sankey chart
+
+<small>
+[Le dilemme européen du gaz russe décrypté en 6 graphiques](https://www.letemps.ch/economie/dilemme-europeen-gaz-russe-decrypte-6-graphiques)
+</small>
 
 ```{r load data}
 df <- read_csv("data/EuropeanGasPipeline.csv") %>% 
@@ -70,7 +73,7 @@ hc_sankey_chart <- df %>%
 
 ## Standalone htmlwidget
 
-```{r }
+```{r export to html}
 
 descr <- str_c(
   "Flux du gaz naturel par gazoduc en Europe, en 2020 et en milliards de mètres cubes<br>",

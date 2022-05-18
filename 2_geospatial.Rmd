@@ -1,12 +1,11 @@
 ---
 title: "More interactive mapping with R"
-subtitle: "shorturl.at/jCX09"
+subtitle: "<br>shorturl.at/jCX09<br>"
 author: "Duc-Quang Nguyen"
 date: "2022/05/19"
 output: 
   revealjs::revealjs_presentation:
-    theme: moon
-    highlight: espresso
+    theme: serif
     echo: TRUE
     warning: FALSE
     message: FALSE
@@ -27,7 +26,7 @@ library(htmltools)
 
 Leaflet is one of the most popular open-source JavaScript libraries for interactive maps
 
-+  Good performance, many options, very large support/users
++  Good performance, many options, very large support/users, maintained by RStudio folks
 -  API syntax not always straightforward to learn from R 
 
 * [Leaflet](https://rstudio.github.io/leaflet/)
