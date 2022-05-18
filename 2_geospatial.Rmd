@@ -128,13 +128,25 @@ lmap
 ---
 
 ```{r add cantonal borders layer, results='hide'}
+cant <- st_read("shp/g2k22.shp") %>% 
+      st_transform(crs = 4326)
+
 lmap %>% 
   addPolylines(
-    data = st_read("shp/g2k22.shp") %>% 
-      st_transform(crs = 4326),
+    data = cant,
     color = "grey", weight = 1.6, smoothFactor = 0.3,
     opacity = 0.7
   ) 
 
 ```
+
+
+
+# Exercise 
+
+* Load the cantonal tilemap ("data/Switzerland_Tiles_CH1903LV03 ... ") [tilemap for Switzerland](https://github.com/ebp-group/Switzerland_Tilemap)
+
+* Overlay it over a leaflet basemap. Bonus point if you chose another dark basemap ([Basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.htm)
+
+
 

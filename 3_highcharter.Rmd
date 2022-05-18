@@ -34,13 +34,13 @@ Highcharts is very flexible and customizable javascript charting library and it 
 
 ---
 
-## Sankey chart
+## Sankey chart highcharter
 
 <small>
 [Le dilemme européen du gaz russe décrypté en 6 graphiques](https://www.letemps.ch/economie/dilemme-europeen-gaz-russe-decrypte-6-graphiques)
 </small>
 
-```{r load data}
+```{r load data for gaz flow to Europe}
 df <- read_csv("data/EuropeanGasPipeline.csv") %>% 
   # highcharts needs these column names
    rename(
@@ -57,21 +57,21 @@ df <- df %>%
   mutate(weight = round(weight, 1))
 
 hc_sankey_chart <- df %>% 
-  mutate(from = fct_reorder(from, weight, sum,.desc = T)) %>% 
+  mutate(from = fct_reorder(from, weight, sum, .desc = T)) %>% 
   arrange(desc(from)) %>% 
   hchart(
     "sankey", 
     name = "Gaz naturel par gazoduc",
-         nodePadding = 5, linkOpacity = 0.6) %>% 
-  hc_tooltip(
-      valueDecimals = 2
-    ) %>% 
+    nodePadding = 5, linkOpacity = 0.6) %>% 
+  hc_tooltip(valueDecimals = 2) %>% 
   hc_size(height = 600) 
 
 ```
 
 
-## Standalone htmlwidget
+# Standalone htmlwidget
+
+With *htmltools* one can create, manipulate, and write HTML from R
 
 ```{r export to html}
 
@@ -97,7 +97,81 @@ save_html(
 ```
 
 
+# French presidential's polls
 
+```{r load polls & wrangle}
+df1_df <- read_csv("data/sondage1erTourFR.csv")
+
+candidate.color <- setNames(
+    c("#E09940", "#38332e", "#ad312f", "#38332e" , "#224bc3"),
+    c("Emmanuel Macron","Marine Le Pen","Jean-Luc Mélenchon", 
+      "Eric Zemmour",  "Valérie Pécresse"))
+
+hc_poll <- hchart(
+  df1_df, 
+  "scatter",
+  hcaes(x = fin_enquete, y = intentions, group = candidat),
+   color = candidate.color,
+  opacity = 0.5,
+  marker = list(radius = 2), 
+  #enableMouseTracking = F,
+  #showInLegend = F,
+  boostThreshold = 200
+) %>% 
+  hc_add_series(
+    df1_df, "areasplinerange",
+    hcaes(x = fin_enquete, low = lower_b, high = upper_b, group = candidat),
+    color = candidate.color,
+    #enableMouseTracking = F, 
+    fillOpacity = 0.11,
+    lineWidth = 0, 
+    #showInLegend = F
+  ) %>% 
+    hc_xAxis(
+    title ="", type = 'datetime',
+    labels = list(format = '{value:%b %Y}', 
+                  align = "center")
+    ) %>% 
+  hc_tooltip(
+    crosshairs = T,
+    table = T,
+    sort = T,
+    xDateFormat = '%d %B %Y',
+    valueDecimals = 1,
+    valueSuffix = "%"
+  ) %>% 
+  # to add automatic series' annotation 
+  hc_add_dependency("modules/series-label.js") %>% 
+  hc_add_dependency("modules/annotations.js") %>% 
+  hc_plotOptions(
+    series = list(
+      label = list(
+        connectorAllowed = F,
+        enabled = TRUE,
+        minFontSize = 13, 
+        style = list(fontWeight = "bold" ))
+    )
+  ) 
+
+
+```
+
+--- 
+
+
+```{r polish the chart}
+
+
+```
+
+# Exercise 
+
+* On the French polls chart add a line/spline per candidate showing the projected voting intentions ("fitted" column)
+* Save the chart to a HTML file
+* Bonus: Add a chart title either via HTML or via highcharter
+
+Help:
+* [Highcharts API](https://www.highcharts.com/docs/chart-and-series-types/chart-types)
 
 
 https://datawrapper.dwcdn.net/F3wwJ/5/

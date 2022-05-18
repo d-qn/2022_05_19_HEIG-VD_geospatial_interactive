@@ -277,13 +277,15 @@ girafe(ggobj = ln_mapi)
 
 [sf cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/sf.pdf)
 
-## Exercise
+# Exercise 1
 
-* Create a choropleth map of last Sunday federal ballot «Lex Netflix» (2022-05-15) with ggplot2 
-  * Too easy? Make it interactive
-  * Help: The "shp" folder contains the swiss cantonal boundaries "shp/g2k22.shp"
-  * You should check the doc of: *swissdd::get_nationalvotes*
+Make a choropleth map of the cantonal results of last Sunday federal ballot «Lex Netflix» (2022-05-15) with ggplot2
 
+Make it static first and interactive with ggiraph
+
+Help:
+* The "shp" folder contains the swiss cantonal boundaries "shp/g2k22.shp"
+* You should check the doc of: *swissdd::get_nationalvotes* 
 
 
 
