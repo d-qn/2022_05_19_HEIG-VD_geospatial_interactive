@@ -90,18 +90,10 @@ lmap <- leaflet(ln_df) %>%
     color = "white", weight = 0.2, smoothFactor = 0.5,
     opacity = 0.95, fillOpacity = 0.98,
     fillColor = ~pal(jaStimmenInProzent),
-    label = ln_df$tp,
-    labelOptions = labelOptions(
-      offset = c(20, 0),
-      style = list(
-        "font-size" = "0.9em",
-        "background-color" = "#f2f2f2",
-        "border-radius" = "4px"),
-      sticky = F,
-      direction = "auto")
+    label = ln_df$tp
   ) %>% 
-  # Add basemap label layer
-  addMapPane("labels", zIndex = 410) %>% # show labels above      
+  # Add basemap labels layer
+  addMapPane("labels", zIndex = 410) %>% # show labels above
   addProviderTiles(providers$CartoDB.PositronOnlyLabels,
                    options = providerTileOptions(pane = "labels") ) %>%
   # Legend box

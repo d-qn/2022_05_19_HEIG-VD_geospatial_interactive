@@ -158,11 +158,10 @@ hc_poll <- hchart(
 
 --- 
 
-
-```{r polish the chart}
-
-
+```{r view chart}
+hc_poll
 ```
+
 
 # Exercise 
 
@@ -173,6 +172,4 @@ hc_poll <- hchart(
 Help:
 * [Highcharts API](https://www.highcharts.com/docs/chart-and-series-types/chart-types)
 
-
-https://datawrapper.dwcdn.net/F3wwJ/5/
 
