@@ -165,8 +165,8 @@ hc_poll
 
 # Exercise 
 
-* On the French polls chart add a line/spline per candidate showing the projected voting intentions ("fitted" column)
-* Save the chart to a HTML file
+* On the French polls chart add a line/spline per candidate showing the projected voting intentions (the "fitted" column)
+* Save the chart to a HTML file (with htmltools)
 * Bonus: Add a chart title either via HTML or via highcharter
 
 Help:

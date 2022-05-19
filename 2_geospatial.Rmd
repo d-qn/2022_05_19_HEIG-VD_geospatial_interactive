@@ -136,7 +136,7 @@ lmap %>%
 
 # Exercise 
 
-* Load the cantonal tilemap ("data/Switzerland_Tiles_CH1903LV03 ... ") [tilemap for Switzerland](https://github.com/ebp-group/Switzerland_Tilemap)
+* Load the cantonal tilemap ("shp/Switzerland_Tiles_CH1903LV03 ... ") [tilemap for Switzerland](https://github.com/ebp-group/Switzerland_Tilemap)
 
 * Overlay it over a leaflet basemap. Bonus point if you chose another dark basemap ([Basemaps](http://leaflet-extras.github.io/leaflet-providers/preview/index.htm)
 
